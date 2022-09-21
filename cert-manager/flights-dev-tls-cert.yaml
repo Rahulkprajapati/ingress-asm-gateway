@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: asm-gateway-tls-cert
+  namespace: asm-ingress
+spec:
+  secretName: asm-gateway-tls-cert
+  issuerRef:
+    name: cluster-issuer
+    kind: ClusterIssuer
+  commonName: flights.devairasia.com
+  dnsNames:
+    - flights.devairasia.com

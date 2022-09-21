@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gke-ingress
+  namespace: asm-ingress
+  annotations:
+    kubernetes.io/ingress.allow-http: "true"
+    kubernetes.io/ingress.global-static-ip-name: "gke-autopilot-ext-ingress-ip"
+    cert-manager.io/cluster-issuer: cluster-issuer
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    # ngress.gcp.kubernetes.io/pre-shared-cert: "flights-dev-airasia-com-cert"
+    networking.gke.io/managed-certificates: "gke-ingress-cert"
+    kubernetes.io/ingress.class: "gce"
+spec:
+  defaultBackend:
+    service:
+      name: asm-ingressgateway
+      port:
+        number: 443
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: asm-ingressgateway
+            port:
+              number: 443
